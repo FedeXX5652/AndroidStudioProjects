@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "423251907375",
+    "project_id": "rune-creator",
+    "storage_bucket": "rune-creator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423251907375:android:68f3d21abab39e4a1787da",
+        "android_client_info": {
+          "package_name": "com.example.runecreator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423251907375-n0etrovu63mkscg2s1s1gmiis465pk96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVLbs38x8Fzr6n6gaJGlHl_d2T1nsCU3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423251907375-n0etrovu63mkscg2s1s1gmiis465pk96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

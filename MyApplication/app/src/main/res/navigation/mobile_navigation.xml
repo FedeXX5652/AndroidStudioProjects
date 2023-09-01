@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_spells">
+
+    <fragment
+        android:id="@+id/navigation_spells"
+        android:name="com.example.myapplication.ui.spells.SpellsFragment"
+        android:label="@string/title_spells"
+        tools:layout="@layout/fragment_spells" />
+
+    <fragment
+        android:id="@+id/navigation_edit_spells"
+        android:name="com.example.myapplication.ui.editSpells.EditSpellsFragment"
+        android:label="@string/title_edit_spells"
+        tools:layout="@layout/fragment_edit_spells" />
+
+    <fragment
+        android:id="@+id/navigation_edit_graph"
+        android:name="com.example.myapplication.ui.editGraph.EditGraphFragment"
+        android:label="@string/title_edit_graph"
+        tools:layout="@layout/fragment_edit_graph" />
+
+    <fragment
+        android:id="@+id/navigation_graph"
+        android:name="com.example.myapplication.ui.graph.GraphFragment"
+        android:label="@string/title_graph"
+        tools:layout="@layout/fragment_graph" />
+</navigation>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/spell"
+        android:id="@+id/spellsFragment"
+        android:title="Spells" />
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/edit"
+        android:id="@+id/editSpellsFragment"
+        android:title="Edit Spells" />
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/edit_graph"
+        android:id="@+id/graphConfigFragment"
+        android:title="Config Graph" />
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/graph"
+        android:id="@+id/graphFragment"
+        android:title="Graph" />
+</menu>

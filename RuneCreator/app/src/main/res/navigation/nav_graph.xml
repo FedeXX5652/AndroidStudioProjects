@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/spellsFragment">
+
+    <fragment
+        android:id="@+id/spellsFragment"
+        android:name="com.example.runecreator.SpellsFragment"
+        android:label="fragment_spells"
+        tools:layout="@layout/fragment_spells" />
+    <fragment
+        android:id="@+id/editSpellsFragment"
+        android:name="com.example.runecreator.EditSpellsFragment"
+        android:label="fragment_edit_spells"
+        tools:layout="@layout/fragment_edit_spells" />
+    <fragment
+        android:id="@+id/graphConfigFragment"
+        android:name="com.example.runecreator.GraphConfigFragment"
+        android:label="fragment_graph_config"
+        tools:layout="@layout/fragment_graph_config" />
+    <fragment
+        android:id="@+id/graphFragment"
+        android:name="com.example.runecreator.GraphFragment"
+        android:label="fragment_graph"
+        tools:layout="@layout/fragment_graph" />
+</navigation>
