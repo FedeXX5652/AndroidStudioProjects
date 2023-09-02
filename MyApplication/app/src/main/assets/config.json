@@ -63,8 +63,8 @@
     },
     {
       "name": "RUNA",
-      "type": "Costo: 5 + Z",
-      "cost": "",
+      "type": "-",
+      "cost": " 5 + Z",
       "description": "Crea una runa mágica en la superficie del objetivo en un radio de 1 metro. Después de un retraso de 1 ronda, la runa se vuelve apenas visible (-2 a cualquier prueba basada en la visión para detectarla). El lanzador elige una o más condiciones sobre las que detona la runa. La runa persiste indefinidamente.\n\n• Proximidad: La runa detona cada vez que un personaje se acerca a cierta distancia (elegida por el lanzador).\n• Tiempo: la runa detona después de un tiempo determinado.\n• Manual: el lanzador puede detonar la runa manualmente desde cualquier distancia usando una acción.\n\nCuando la runa detona, afecta a todos los objetivos dentro de 1 + Z metros. Esto cuenta como un ataque de área de efecto y se puede evadir, pero solo si un personaje es consciente de la runa."
     },
     {

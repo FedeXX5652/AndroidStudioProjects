@@ -13,9 +13,9 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    
+
     var config = JSONObject()
-    var level = 0
+    var level = 1
     var form = ""
     var school = ""
     var effect = ""
@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
         config = loadConfig()
         form = config.getJSONArray("forms").getJSONObject(0).getString("name")
-        // set school to first key of effects dict
         school = config.getJSONObject("effects").keys().next()
         effect = config.getJSONObject("effects").getJSONArray(school).getJSONObject(0).getString("Efecto")
 
