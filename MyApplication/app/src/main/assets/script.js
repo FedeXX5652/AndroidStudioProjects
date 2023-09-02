@@ -42,33 +42,3 @@ function show() {
                           }
                         });
 }
-
-function getGraph() {
-    console.log("getGraph");
-    var cy = cytoscape({
-                container: document.getElementById('cy'),
-                elements: [
-                  { data: { id: 'a' } },
-                  { data: { id: 'b' } },
-                  { data: { id: 'c' } },
-                  {
-                    data: {
-                      id: 'ab',
-                      source: 'a',
-                      target: 'b'
-                    }
-                  },
-                  {
-                    data: {
-                      id: 'ac',
-                      source: 'a',
-                      target: 'c'
-                    }
-                  }],
-                layout: {
-                    name: 'random'
-                }
-              });
-    console.log(cy.nodes().length);
-    return cy;
-}
