@@ -13,6 +13,7 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    
     var config = JSONObject()
     var level = 0
     var form = ""
