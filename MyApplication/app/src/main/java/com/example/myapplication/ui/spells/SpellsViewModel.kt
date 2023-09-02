@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 
 class SpellsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is spells Fragment"
-    }
-    val text: LiveData<String> = _text
+    var level: Int = 0
+    var form: String = ""
+    var school: String = ""
+    var effect: String = ""
 }

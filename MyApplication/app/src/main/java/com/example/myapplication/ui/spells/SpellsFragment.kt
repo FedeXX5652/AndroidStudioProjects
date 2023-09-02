@@ -1,12 +1,14 @@
 package com.example.myapplication.ui.spells
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.MainActivity
 import com.example.myapplication.databinding.FragmentSpellsBinding
 
 class SpellsFragment : Fragment() {
@@ -28,10 +30,23 @@ class SpellsFragment : Fragment() {
         _binding = FragmentSpellsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSpells
-        spellsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val level = binding.levelPicker
+        val form = binding.formPicker
+        val school = binding.schoolPicker
+        val effect = binding.effectPicker
+
+        // set accepted values to level picker
+        level.minValue = 0
+        level.maxValue = 9
+
+        // add listener to level picker and update spellsViewModel.level and print
+        level.setOnValueChangedListener { _, _, newVal ->
+            spellsViewModel.level = newVal
+            Log.i("SpellsFragment", "level: ${spellsViewModel.level}")
+            (activity as MainActivity).count++
+            Log.i("SpellsFragment", "count: ${(activity as MainActivity).count}")
         }
+
         return root
     }
 
