@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadConfig(): JSONObject {
         val configString = assets.open("config.json").bufferedReader().use { it.readText() }
         val configJSON = JSONObject(configString)
-        var json = JSONObject()
+        val json = JSONObject()
         /*
         * file has the following structure:
         * {

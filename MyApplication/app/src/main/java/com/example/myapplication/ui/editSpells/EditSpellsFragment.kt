@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -37,7 +38,7 @@ class EditSpellsFragment : Fragment() {
 
         val config = activity.config
         val spells = activity.spells
-        val spellsStringify = spells.map { it.getString("effect") + " " + it.getString("school") + " " + it.getString("form") + " " + it.getString("level") }
+        var spellsStringify = spells.map { it.getString("effect") + " " + it.getString("school") + " " + it.getString("form") + " " + it.getString("level") }
 
         val spellsListView = binding.spellsListView
 
@@ -70,16 +71,33 @@ class EditSpellsFragment : Fragment() {
                 }
             }
 
-            showDialog(selectedSpellLevel.toInt(), form, selectedSpellSchool, effect)
+            showDialog(spells, position, selectedSpellLevel.toInt(), form, selectedSpellSchool, effect, spellsListView)
         }
 
         return root
     }
 
-    private fun showDialog(level: Int, form: JSONObject, school: String, effect: JSONObject){
+    private fun showDialog(spells: MutableList<JSONObject>, posSelectedSpell: Int, level: Int,
+                           form: JSONObject, school: String, effect: JSONObject, spellsListView: ListView){
+
         Log.i("showDialog", "showDialog")
-        val dialog: Dialog = Dialog(this.context as MainActivity)
+        val dialog: Dialog = Dialog(this.context as MainActivity, R.style.DialogStyle)
+
         dialog.setContentView(R.layout.dialog_edit_spells)
+
+        val deleteButton = dialog.findViewById<TextView>(R.id.deleteButton)
+        deleteButton.setOnClickListener {
+            Log.i("deleteButton", spells.toString())
+            spells.removeAt(posSelectedSpell)
+            Log.i("deleteButton", spells.toString())
+            dialog.dismiss()
+            spellsListView.adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                spells.map { it.getString("effect") + " " + it.getString("school") + " " + it.getString("form") + " " + it.getString("level") }
+            )
+        }
+
         val levelTextView = dialog.findViewById<TextView>(R.id.levelTextView)
         val formName = dialog.findViewById<TextView>(R.id.formName)
         val formType = dialog.findViewById<TextView>(R.id.formType)
