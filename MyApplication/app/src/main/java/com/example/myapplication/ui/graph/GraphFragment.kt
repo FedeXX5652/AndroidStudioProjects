@@ -26,6 +26,7 @@ class GraphFragment : Fragment() {
     private var config = JSONObject()
 
     private var nodeCount = 0
+    private var usedNodes = mutableListOf<Int>()
     private var edgeMatrix = arrayOf<Array<Int>>()
 
     private var spell = JSONObject()
@@ -64,6 +65,8 @@ class GraphFragment : Fragment() {
             addEdges()
         }
 
+        deleteUnnecessaryNodes()
+
         reloadBtn.setOnClickListener {
             val elementsStr = elements.toString()
 
@@ -77,17 +80,26 @@ class GraphFragment : Fragment() {
         return root
     }
 
-    /**
-     * def add_edges2(G: nx.Graph, step: int, node: int):
-     *     G.add_edge(node+1, (node+step)%n+1)
-     *
-     * def graph(G,mat: list):
-     *     for i in range(mat.__len__()):
-     *         mat[i].reverse()
-     *         for j in range(mat[i].__len__()):
-     *             if mat[i][j] == 1:
-     *                 add_edges2(G, i+1, j)
-     */
+    private fun deleteUnnecessaryNodes() {
+        // delete the nodes that are not connected to any other node
+        val toDelete = mutableListOf<Int>()
+        for (i in 0 until nodeCount) {
+            if (!usedNodes.contains(i + 1)) {
+                toDelete.add(i + 1)
+            }
+        }
+        Log.i("selected to delete", toDelete.toString())
+        for (i in toDelete) {
+            for (j in elements.indices) {
+                if (elements[j].getJSONObject("data").has("id") && elements[j].getJSONObject("data").getInt("id") == i) {
+                    Log.i("selected elements", "deleted")
+                    elements.removeAt(j)
+                    break
+                }
+            }
+        }
+    }
+
     private fun addEdges() {
         Log.i("edgeMatrix", edgeMatrix.contentDeepToString())
         // if the matrix is [[0, 1, 1, 1], [0, 0, 1, 1], [0, 0, 0, 1]]
@@ -112,6 +124,13 @@ class GraphFragment : Fragment() {
                     edge.getJSONObject("data").put("target", (i+j+1)%nodeCount+1)
                     edge.getJSONObject("data").put("label", "edge${i+1}")
                     elements.add(edge)
+                    // add to used nodes if not already in list
+                    if (!usedNodes.contains(j+1)) {
+                        usedNodes.add(j+1)
+                    }
+                    if (!usedNodes.contains((i+j+1)%nodeCount+1)) {
+                        usedNodes.add((i+j+1)%nodeCount+1)
+                    }
                     Log.i("edgeMatrix", "edge added: ${j+1} -> ${(i+j+1)%nodeCount+1} as edge${i+1}")
                 }
             }

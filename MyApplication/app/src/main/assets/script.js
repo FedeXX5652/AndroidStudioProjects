@@ -46,7 +46,7 @@ function show(elements_in) {
             })
             .selector('edge')
             .css({
-                'curve-style': 'Haystack',
+                'curve-style': 'bezier',
                 'haystack-radius': .5,
             }),
         elements: elements_in,
@@ -55,7 +55,6 @@ function show(elements_in) {
         }
     });
 
-    // if label is edge1, edge2, edge3, then change color to red, blue, green respectively
     cy.edges().forEach(function( ele ){
         if (ele.data('label') == 'edge1') {
             ele.style('line-color', 'red');
@@ -66,6 +65,6 @@ function show(elements_in) {
         else if (ele.data('label') == 'edge3') {
             ele.style('line-color', 'green');
         }
-        });
+    });
 }
 
