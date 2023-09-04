@@ -46,19 +46,8 @@ function show(elements_in) {
             })
             .selector('edge')
             .css({
-                'curve-style': 'bezier',
-            })
-            .selector('#edge1')
-            .css({
-                'line-color': 'black',
-            })
-            .selector('#edge2')
-            .css({
-                'line-color': 'red',
-            })
-            .selector('#edge3')
-            .css({
-                'line-color': 'blue',
+                'curve-style': 'Haystack',
+                'haystack-radius': .5,
             }),
         elements: elements_in,
         layout: {
