@@ -30,6 +30,8 @@ class GraphFragment : Fragment() {
 
     private var spell = JSONObject()
 
+    private var elements = mutableListOf<JSONObject>() // this list contains the nodes and edges
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +53,7 @@ class GraphFragment : Fragment() {
         webView.loadUrl("file:///android_asset/index.html")
 
         calculateNodeCount()
+        addNodes()
 
         for (addedSpells in activity.spells) {
             spell = addedSpells
@@ -58,16 +61,72 @@ class GraphFragment : Fragment() {
             loadLevelMatrix()
             loadFormMatrix()
             loadEffectMatrix()
+            addEdges()
         }
 
         reloadBtn.setOnClickListener {
-            // Call the JavaScript function to show the runes
+            val elementsStr = elements.toString()
+
+            Log.i("elements", elementsStr)
+
             val script = """
-                show();
+                show(${elementsStr});
             """
             webView.evaluateJavascript(script, null)
         }
         return root
+    }
+
+    /**
+     * def add_edges2(G: nx.Graph, step: int, node: int):
+     *     G.add_edge(node+1, (node+step)%n+1)
+     *
+     * def graph(G,mat: list):
+     *     for i in range(mat.__len__()):
+     *         mat[i].reverse()
+     *         for j in range(mat[i].__len__()):
+     *             if mat[i][j] == 1:
+     *                 add_edges2(G, i+1, j)
+     */
+    private fun addEdges() {
+        Log.i("edgeMatrix", edgeMatrix.contentDeepToString())
+        // if the matrix is [[0, 1, 1, 1], [0, 0, 1, 1], [0, 0, 0, 1]]
+        // then this represents the following:
+        // the row indicates the step, so the first row is: 1->2, 2->3, 3->4
+        // the second row is: 1->3, 2->4
+        // the third row is: 1->4
+        // so the edges are: 1->2, 1->3, 1->4, 2->3, 2->4, 3->4
+        // the edges must be added from {i+1} to {(node+step)%n+1}
+
+        for (i in edgeMatrix.indices) {
+            edgeMatrix[i].reverse()
+            Log.i("edgeMatrix", i.toString())
+            for (j in edgeMatrix[i].indices) {
+                if (edgeMatrix[i][j] == 1) {
+                    Log.i("edgeMatrix", j.toString())
+                    Log.i("edgeMatrix", edgeMatrix[i].contentToString())
+                    val edge = JSONObject("{data: {}}")
+                    edge.getJSONObject("data").put("source", j+1)
+                    // the target is the next node in the matrix plus the step
+                    // so if the step is 2, then the target is 2+1=3
+                    edge.getJSONObject("data").put("target", (i+j+1)%nodeCount+1)
+                    edge.getJSONObject("data").put("label", "edge${i+1}")
+                    elements.add(edge)
+                    Log.i("edgeMatrix", "edge added: ${j+1} -> ${(i+j+1)%nodeCount+1} as edge${i+1}")
+                }
+            }
+        }
+
+        Log.d("elements", elements.toString())
+    }
+
+    private fun addNodes() {
+        for (i in 0 until nodeCount) {
+            val node = JSONObject("{data: {}}")
+            node.getJSONObject("data").put("id", i+1)
+            elements.add(node)
+        }
+        Log.d("elements", elements.toString())
     }
 
     private fun loadEffectMatrix() {
