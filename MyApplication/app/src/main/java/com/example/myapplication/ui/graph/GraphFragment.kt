@@ -56,6 +56,8 @@ class GraphFragment : Fragment() {
             spell = addedSpells
             createEmptyMatrix()
             loadLevelMatrix()
+            loadFormMatrix()
+            loadEffectMatrix()
         }
 
         reloadBtn.setOnClickListener {
@@ -68,8 +70,47 @@ class GraphFragment : Fragment() {
         return root
     }
 
+    private fun loadEffectMatrix() {
+        val effect = spell.getString("effect")
+        val school = spell.getString("school")
+        val availableEffects = config.getJSONObject("effects").getJSONArray(school)
+        var effectIndex = 0
+        for (i in 0 until availableEffects.length()) {
+            if (availableEffects.getJSONObject(i).getString("Efecto") == effect) {
+                effectIndex = i
+                break
+            }
+        }
+
+        // add the other effects from previous schools
+        // as if effects: {a: [{a1},{a2}], b: [{b1},{b2}]}
+        // ad selected effect is b1, then the index should be:
+        // 2 + 1 = 3
+        for (i in 0 until config.getJSONObject("effects").length()) {
+            if (config.getJSONObject("effects").names()[i] == school) {
+                break
+            }
+            effectIndex += config.getJSONObject("effects").getJSONArray(
+                config.getJSONObject("effects").names()?.get(i).toString()).length()
+        }
+
+        edgeMatrix[2] = rowFactory(effectIndex)
+    }
+
+    private fun loadFormMatrix() {
+        val form = spell.getString("form")
+        val availableForms = config.getJSONArray("forms")
+        var formIndex = 0
+        for (i in 0 until availableForms.length()) {
+            if (availableForms.getJSONObject(i).getString("name") == form) {
+                formIndex = i
+                break
+            }
+        }
+        edgeMatrix[1] = rowFactory(formIndex)
+    }
+
     private fun loadLevelMatrix() {
-        Log.i("spell", spell.toString())
         val lvl = spell.getInt("level")
         edgeMatrix[0] = rowFactory(lvl-1)
     }
@@ -96,7 +137,6 @@ class GraphFragment : Fragment() {
         if (effects > nodeCount) {
             nodeCount = effects
         }
-        Log.d("nodeCount", nodeCount.toString())
     }
 
     private fun rowFactory(num:Int): Array<Int> {
@@ -104,9 +144,7 @@ class GraphFragment : Fragment() {
         // its binary representation but with an added 1 at the ending
         // ex: 3 -> [0, 1, 1, 1]
         val binary = Integer.toBinaryString(num)
-        Log.i("rowFactory", binary)
         val arr = Array(nodeCount+1) { 0 }
-        Log.i("rowFactory", arr.contentToString())
         for (i in binary.indices) {
             // add the binary representation to the array from the end
             // as shown: 5 -> 101 -> [0, 1, 0, 1] or 6 -> 110 -> [0, 1, 1, 0]

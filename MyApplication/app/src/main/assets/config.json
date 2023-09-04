@@ -173,7 +173,12 @@
         "Coste": "3xNH"
       }
     ],
-    "conjuracion": [],
+    "conjuracion": [{
+      "Efecto": "Conjurar (Tipo)",
+      "Regla": "Conjura cositas, muy largo de explicar, leelo cap@",
+      "Parámetro": "-",
+      "Coste": "qcy es complicado, mucho texto"
+    }],
     "destruccion": [
       {
         "Efecto": "Desintegrar Arma",
