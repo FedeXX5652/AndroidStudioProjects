@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.MainActivity
 import com.example.myapplication.databinding.FragmentGraphBinding
 import org.json.JSONObject
+import kotlin.math.log
 
 class GraphFragment : Fragment() {
 
@@ -26,6 +27,8 @@ class GraphFragment : Fragment() {
 
     private var nodeCount = 0
     private var edgeMatrix = arrayOf<Array<Int>>()
+
+    private var spell = JSONObject()
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
@@ -49,6 +52,12 @@ class GraphFragment : Fragment() {
 
         calculateNodeCount()
 
+        for (addedSpells in activity.spells) {
+            spell = addedSpells
+            createEmptyMatrix()
+            loadLevelMatrix()
+        }
+
         reloadBtn.setOnClickListener {
             // Call the JavaScript function to show the runes
             val script = """
@@ -57,6 +66,16 @@ class GraphFragment : Fragment() {
             webView.evaluateJavascript(script, null)
         }
         return root
+    }
+
+    private fun loadLevelMatrix() {
+        Log.i("spell", spell.toString())
+        val lvl = spell.getInt("level")
+        edgeMatrix[0] = rowFactory(lvl-1)
+    }
+
+    private fun createEmptyMatrix() {
+        edgeMatrix = Array(config.length()) { Array(nodeCount+1) { 0 } }
     }
 
     private fun calculateNodeCount() {
@@ -78,6 +97,24 @@ class GraphFragment : Fragment() {
             nodeCount = effects
         }
         Log.d("nodeCount", nodeCount.toString())
+    }
+
+    private fun rowFactory(num:Int): Array<Int> {
+        // receives a number and returns an array of 0s and 1s
+        // its binary representation but with an added 1 at the ending
+        // ex: 3 -> [0, 1, 1, 1]
+        val binary = Integer.toBinaryString(num)
+        Log.i("rowFactory", binary)
+        val arr = Array(nodeCount+1) { 0 }
+        Log.i("rowFactory", arr.contentToString())
+        for (i in binary.indices) {
+            // add the binary representation to the array from the end
+            // as shown: 5 -> 101 -> [0, 1, 0, 1] or 6 -> 110 -> [0, 1, 1, 0]
+            arr[nodeCount - binary.length + i] = binary[i].toString().toInt()
+        }
+        // add extra position at the end and set it to 1
+        arr[nodeCount] = 1
+        return arr
     }
 
     override fun onDestroyView() {
