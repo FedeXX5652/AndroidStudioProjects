@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
+import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
@@ -20,11 +22,13 @@ class MainActivity : AppCompatActivity() {
     var school = ""
     var effect = ""
     var spells = mutableListOf<JSONObject>()
+    var savedSpells = mutableListOf<JSONObject>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         config = loadConfig()
+        savedSpells = loadSavedSpells()
         form = config.getJSONArray("forms").getJSONObject(0).getString("name")
         school = config.getJSONObject("effects").keys().next()
         effect = config.getJSONObject("effects").getJSONArray(school).getJSONObject(0).getString("Efecto")
@@ -46,17 +50,20 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    private fun loadSavedSpells(): MutableList<JSONObject> {
+        val spellsString = assets.open("saved.json").bufferedReader().use { it.readText() }
+        val spellsJSON = JSONArray(spellsString)
+        val spells = mutableListOf<JSONObject>()
+        for (i in 0 until spellsJSON.length()) {
+            spells.add(spellsJSON.getJSONObject(i))
+        }
+        return spells
+    }
+
     private fun loadConfig(): JSONObject {
         val configString = assets.open("config.json").bufferedReader().use { it.readText() }
         val configJSON = JSONObject(configString)
         val json = JSONObject()
-        /*
-        * file has the following structure:
-        * {
-        *   "max_lvl": 5,
-        *  "forms": [{},{}]
-        * "effects": {"a": [{},{}], "b": [{},{}]}
-        * */
         json.put("max_lvl", configJSON.getInt("max_lvl"))
         json.put("forms", configJSON.getJSONArray("forms"))
         json.put("effects", configJSON.getJSONObject("effects"))

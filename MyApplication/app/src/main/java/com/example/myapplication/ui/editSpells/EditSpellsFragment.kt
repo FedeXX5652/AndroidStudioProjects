@@ -38,7 +38,7 @@ class EditSpellsFragment : Fragment() {
 
         val config = activity.config
         val spells = activity.spells
-        var spellsStringify = spells.map { it.getString("effect") + " " + it.getString("school") + " " + it.getString("form") + " " + it.getString("level") }
+        val spellsStringify = spells.map { it.getString("effect") + " " + it.getString("school") + " " + it.getString("form") + " " + it.getString("level") }
 
         val spellsListView = binding.spellsListView
 
