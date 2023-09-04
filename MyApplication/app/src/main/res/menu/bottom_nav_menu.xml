@@ -12,9 +12,9 @@
         android:title="Edit Spells" />
 
     <item
-        android:id="@+id/navigation_edit_graph"
-        android:icon="@drawable/ic_edit_graph"
-        android:title="Edit Graph" />
+        android:id="@+id/navigation_load_save_spells"
+        android:icon="@drawable/ic_load_saved"
+        android:title="Load / Save" />
 
     <item
         android:id="@+id/navigation_graph"

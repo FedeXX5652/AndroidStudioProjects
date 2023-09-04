@@ -18,10 +18,10 @@
         tools:layout="@layout/fragment_edit_spells" />
 
     <fragment
-        android:id="@+id/navigation_edit_graph"
-        android:name="com.example.myapplication.ui.editGraph.EditGraphFragment"
+        android:id="@+id/navigation_load_save_spells"
+        android:name="com.example.myapplication.ui.loadSaveSpells.LoadSaveSpellsFragment"
         android:label="@string/title_edit_graph"
-        tools:layout="@layout/fragment_edit_graph" />
+        tools:layout="@layout/fragment_load_save_spells" />
 
     <fragment
         android:id="@+id/navigation_graph"

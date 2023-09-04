@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -22,13 +23,12 @@ class MainActivity : AppCompatActivity() {
     var school = ""
     var effect = ""
     var spells = mutableListOf<JSONObject>()
-    var savedSpells = mutableListOf<JSONObject>()
+    var navController = NavController(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         config = loadConfig()
-        savedSpells = loadSavedSpells()
         form = config.getJSONArray("forms").getJSONObject(0).getString("name")
         school = config.getJSONObject("effects").keys().next()
         effect = config.getJSONObject("effects").getJSONArray(school).getJSONObject(0).getString("Efecto")
@@ -43,21 +43,11 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_spells, R.id.navigation_edit_spells, R.id.navigation_edit_graph, R.id.navigation_graph
+                R.id.navigation_spells, R.id.navigation_edit_spells, R.id.navigation_load_save_spells, R.id.navigation_graph
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-    }
-
-    private fun loadSavedSpells(): MutableList<JSONObject> {
-        val spellsString = assets.open("saved.json").bufferedReader().use { it.readText() }
-        val spellsJSON = JSONArray(spellsString)
-        val spells = mutableListOf<JSONObject>()
-        for (i in 0 until spellsJSON.length()) {
-            spells.add(spellsJSON.getJSONObject(i))
-        }
-        return spells
     }
 
     private fun loadConfig(): JSONObject {
