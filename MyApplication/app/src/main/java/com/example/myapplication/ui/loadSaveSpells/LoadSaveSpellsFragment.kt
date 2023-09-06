@@ -51,6 +51,12 @@ class LoadSaveSpellsFragment : Fragment() {
 
             val file = File("${activity.filesDir}/saved.json")
 
+            try {
+                file.createNewFile()
+            } catch (e: Exception) {
+                Log.i("file", e.toString())
+            }
+
             // load the saved spells
             val savedSpellsString = file.bufferedReader().use { it.readText() }
             val savedSpellsJSONArray = JSONArray(savedSpellsString)
@@ -106,8 +112,28 @@ class LoadSaveSpellsFragment : Fragment() {
                 Log.i("file", file.absolutePath.toString())
 
                 // load the saved spells
+                try {
+                    file.createNewFile()
+
+                } catch (e: Exception) {
+                    Log.i("file", e.toString())
+                }
                 val savedSpellsString = file.bufferedReader().use { it.readText() }
-                val savedSpellsJSONArray = JSONArray(savedSpellsString)
+
+                try{
+                    JSONArray(savedSpellsString)
+                } catch (e: Exception) {
+                    Log.i("file", e.toString())
+                    val fileWriter = FileWriter(file)
+                    fileWriter.write("[]")
+                    fileWriter.close()
+                }
+
+                var savedSpellsJSONArray = JSONArray()
+
+                if (savedSpellsString.isNotEmpty()) {
+                    savedSpellsJSONArray = JSONArray(savedSpellsString)
+                }
 
                 Log.i("savedSpellsJSONArray", savedSpellsJSONArray.toString())
 

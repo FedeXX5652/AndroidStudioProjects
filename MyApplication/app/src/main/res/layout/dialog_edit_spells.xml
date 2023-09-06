@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <GridLayout
+        android:background="@color/black"
         android:id="@+id/GridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +20,8 @@
             android:layout_row="0"
             android:layout_column="0"
             android:text="Level:"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +29,8 @@
             android:layout_row="1"
             android:layout_column="0"
             android:text="Form:"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +38,8 @@
             android:layout_row="6"
             android:layout_column="0"
             android:text="Spell:"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/levelTextView"
@@ -43,7 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="1"
-            android:text="level" />
+            android:text="level"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/formName"
@@ -51,7 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="1"
-            android:text="name" />
+            android:text="name"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/formType"
@@ -59,7 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_row="3"
             android:layout_column="1"
-            android:text="type" />
+            android:text="type"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/formCost"
@@ -67,7 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_row="4"
             android:layout_column="1"
-            android:text="cost" />
+            android:text="cost"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/formDescription"
@@ -75,7 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_row="5"
             android:layout_column="1"
-            android:text="description" />
+            android:text="description"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/effectSchool"
@@ -83,7 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_row="7"
             android:layout_column="1"
-            android:text="school" />
+            android:text="school"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/effectEffect"
@@ -91,7 +101,8 @@
             android:layout_height="wrap_content"
             android:layout_row="8"
             android:layout_column="1"
-            android:text="effect" />
+            android:text="effect"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/effectRule"
@@ -99,7 +110,8 @@
             android:layout_height="wrap_content"
             android:layout_row="9"
             android:layout_column="1"
-            android:text="rule" />
+            android:text="rule"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/effectParameter"
@@ -107,7 +119,8 @@
             android:layout_height="wrap_content"
             android:layout_row="10"
             android:layout_column="1"
-            android:text="parameter" />
+            android:text="parameter"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/effectCost"
@@ -115,7 +128,8 @@
             android:layout_height="wrap_content"
             android:layout_row="11"
             android:layout_column="1"
-            android:text="cost" />
+            android:text="cost"
+            android:textColor="@color/white"/>
     </GridLayout>
 
 
