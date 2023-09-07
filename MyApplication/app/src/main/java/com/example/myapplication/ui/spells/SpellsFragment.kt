@@ -1,16 +1,15 @@
 package com.example.myapplication.ui.spells
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSpellsBinding
@@ -39,6 +38,13 @@ class SpellsFragment : Fragment() {
         val school = binding.schoolPicker
         val effect = binding.effectPicker
         val addBtn = binding.addBtn
+
+        val thuumWebView = binding.thuumWebView
+
+        thuumWebView.webChromeClient = WebChromeClient()
+        thuumWebView.settings.javaScriptEnabled = true
+        thuumWebView.settings.domStorageEnabled = true
+        thuumWebView.loadUrl("https://www.thuum.org/translator.php")
 
         level.minValue = 1
         level.maxValue = activity.config.getInt("max_lvl")

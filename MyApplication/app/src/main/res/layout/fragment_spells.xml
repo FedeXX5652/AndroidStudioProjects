@@ -25,7 +25,8 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="WebViewLayout">
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -141,6 +142,14 @@
                 android:layout_height="match_parent"
                 android:layout_column="0"
                 android:layout_row="4"/>
+
+            <WebView
+                android:layout_column="0"
+                android:layout_row="5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/thuum_web_view">
+            </WebView>
 
         </GridLayout>
 
