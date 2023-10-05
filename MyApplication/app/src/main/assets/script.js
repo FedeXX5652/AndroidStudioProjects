@@ -1,36 +1,3 @@
-var json = {};
-
-//function show(elements) {
-//    // set cytoscape to div
-//    var cy = cytoscape({
-//                          container: document.getElementById('cy'),
-//                          elements: [
-//                            { data: { id: 'a' } },
-//                            { data: { id: 'b' } },
-//                            { data: { id: 'c' } },
-//                            { data: { id: 'd' } },
-//                            { data: { id: 'e' } },
-//                            { data: { id: 'f' } },
-//                            {
-//                              data: {
-//                                id: 'ab',
-//                                source: 'a',
-//                                target: 'b'
-//                              }
-//                            },
-//                            {
-//                              data: {
-//                                id: 'ac',
-//                                source: 'a',
-//                                target: 'c'
-//                              }
-//                            }],
-//                          layout: {
-//                              name: 'random'
-//                          }
-//                        });
-//}
-
 function show(elements_in) {
     // set cytoscape to div
     var cy = cytoscape({
@@ -65,6 +32,8 @@ function show(elements_in) {
         else if (ele.data('label') == 'edge3') {
             ele.style('line-color', 'green');
         }
+        else if (ele.data('label') == 'b') {
+                    ele.style('line-color', 'black');
+        }
     });
 }
-

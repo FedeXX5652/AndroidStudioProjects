@@ -1,16 +1,21 @@
 package com.example.myapplication.ui.graph
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Switch
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.MainActivity
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentGraphBinding
 import org.json.JSONObject
 import kotlin.math.log
@@ -33,6 +38,10 @@ class GraphFragment : Fragment() {
 
     private var elements = mutableListOf<JSONObject>() // this list contains the nodes and edges
 
+    private var layoutState = "circle"
+    private var nodeIndicatorState = true
+    private var edgeColoringState = true
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,26 +57,37 @@ class GraphFragment : Fragment() {
 
         val webView = binding.webView
         val reloadBtn = binding.reloadBtn
+        val infoBtn = binding.infoBtn
+        val styleBtn = binding.styleBtn
 
         webView.settings.javaScriptEnabled = true
 
         webView.loadUrl("file:///android_asset/index.html")
 
-        calculateNodeCount()
-        addNodes()
-
-        for (addedSpells in activity.spells) {
-            spell = addedSpells
-            createEmptyMatrix()
-            loadLevelMatrix()
-            loadFormMatrix()
-            loadEffectMatrix()
-            addEdges()
-        }
-
-        deleteUnnecessaryNodes()
+        binding.webView.performClick()
 
         reloadBtn.setOnClickListener {
+            // set the default values
+            nodeCount = 0
+            usedNodes = mutableListOf<Int>()
+            edgeMatrix = arrayOf<Array<Int>>()
+            spell = JSONObject()
+            elements = mutableListOf<JSONObject>()
+
+            calculateNodeCount()
+            addNodes()
+
+            for (addedSpells in activity.spells) {
+                spell = addedSpells
+                createEmptyMatrix()
+                loadLevelMatrix()
+                loadFormMatrix()
+                loadEffectMatrix()
+                addEdges()
+            }
+
+            deleteUnnecessaryNodes()
+
             val elementsStr = elements.toString()
 
             Log.i("elements", elementsStr)
@@ -77,6 +97,21 @@ class GraphFragment : Fragment() {
             """
             webView.evaluateJavascript(script, null)
         }
+
+        infoBtn.setOnClickListener {
+            val info = binding.info
+            if (info.visibility == View.GONE) {
+                info.visibility = View.VISIBLE
+            } else {
+                info.visibility = View.GONE
+            }
+        }
+
+        styleBtn.setOnClickListener {
+            // starts the style dialog
+            showDialog()
+        }
+
         return root
     }
 
@@ -122,7 +157,11 @@ class GraphFragment : Fragment() {
                     // the target is the next node in the matrix plus the step
                     // so if the step is 2, then the target is 2+1=3
                     edge.getJSONObject("data").put("target", (i+j+1)%nodeCount+1)
-                    edge.getJSONObject("data").put("label", "edge${i+1}")
+                    if (edgeColoringState) {
+                        edge.getJSONObject("data").put("label", "edge${i+1}")
+                    }else{
+                        edge.getJSONObject("data").put("label", "b")
+                    }
                     elements.add(edge)
                     // add to used nodes if not already in list
                     if (!usedNodes.contains(j+1)) {
@@ -231,6 +270,47 @@ class GraphFragment : Fragment() {
         // add extra position at the end and set it to 1
         arr[nodeCount] = 1
         return arr
+    }
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private fun showDialog() {
+        val dialog: Dialog = Dialog(this.context as MainActivity, R.style.DialogStyle)
+        dialog.setContentView(R.layout.dialog_graph_style)
+
+
+        val layoutSpinner = dialog.findViewById<Spinner>(R.id.layoutSpinner)
+        val layoutSpinnerOptions = arrayOf("grid", "random", "circle", "concentric", "breadthfirst", "cose")
+        // set the spinner options
+        layoutSpinner.adapter = activity?.let {
+            ArrayAdapter(
+                it,
+                android.R.layout.simple_spinner_dropdown_item,
+                layoutSpinnerOptions
+            )
+        }
+
+        val nodeIndicatorSwitch = dialog.findViewById<Switch>(R.id.nodeIndicatorSwitch)
+        val edgeColoringSwitch = dialog.findViewById<Switch>(R.id.edgeColoringSwitch)
+
+        // set defaults
+        layoutSpinner.setSelection(layoutSpinnerOptions.indexOf(layoutState))
+        nodeIndicatorSwitch.isChecked = nodeIndicatorState
+        edgeColoringSwitch.isChecked = edgeColoringState
+
+        // apply button
+        val applyBtn = dialog.findViewById<TextView>(R.id.applyBtn)
+        applyBtn.setOnClickListener {
+            layoutState = layoutSpinner.selectedItem.toString()
+            nodeIndicatorState = nodeIndicatorSwitch.isChecked
+            edgeColoringState = edgeColoringSwitch.isChecked
+
+            // click reload button
+            binding.reloadBtn.performClick()
+
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {
