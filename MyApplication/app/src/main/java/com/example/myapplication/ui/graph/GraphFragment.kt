@@ -90,10 +90,14 @@ class GraphFragment : Fragment() {
 
             val elementsStr = elements.toString()
 
+            val layoutJSON = JSONObject()
+            layoutJSON.put("name", layoutState)
+            val layoutStr = layoutJSON.toString()
+
             Log.i("elements", elementsStr)
 
             val script = """
-                show(${elementsStr});
+                show(${elementsStr}, ${layoutStr});
             """
             webView.evaluateJavascript(script, null)
         }

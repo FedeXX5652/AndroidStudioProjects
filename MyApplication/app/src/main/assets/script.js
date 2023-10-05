@@ -1,4 +1,4 @@
-function show(elements_in) {
+function show(elements_in, layout_in) {
     // set cytoscape to div
     var cy = cytoscape({
         container: document.getElementById('cy'),
@@ -17,9 +17,7 @@ function show(elements_in) {
                 'haystack-radius': .5,
             }),
         elements: elements_in,
-        layout: {
-            name: 'circle'
-        }
+        layout: layout_in
     });
 
     cy.edges().forEach(function( ele ){
