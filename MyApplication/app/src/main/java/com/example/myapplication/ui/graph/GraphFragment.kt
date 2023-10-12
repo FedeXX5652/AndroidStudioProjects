@@ -41,6 +41,7 @@ class GraphFragment : Fragment() {
     private var layoutState = "circle"
     private var nodeIndicatorState = true
     private var edgeColoringState = true
+    private var edgeLayout = JSONObject()
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
@@ -48,6 +49,9 @@ class GraphFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        edgeLayout.put("curve-style", "bezier")
+        edgeLayout.put("haystack-radius", .5)
 
         _binding = FragmentGraphBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -65,6 +69,7 @@ class GraphFragment : Fragment() {
         webView.loadUrl("file:///android_asset/index.html")
 
         binding.webView.performClick()
+        binding.reloadBtn.performClick()
 
         reloadBtn.setOnClickListener {
             // set the default values
@@ -94,10 +99,24 @@ class GraphFragment : Fragment() {
             layoutJSON.put("name", layoutState)
             val layoutStr = layoutJSON.toString()
 
+            val edgeLayoutStr = edgeLayout.toString()
+
+            val nodeStyleJSON = JSONObject()
+            nodeStyleJSON.put("label", "data(id)")
+            nodeStyleJSON.put("text-valign", "center")
+            nodeStyleJSON.put("text-halign", "center")
+            nodeStyleJSON.put("border-color", "black")
+            nodeStyleJSON.put("border-opacity", "1")
+
+            val nodeIndicatorStr = if (nodeIndicatorState) nodeStyleJSON.toString() else "{}"
+
             Log.i("elements", elementsStr)
+            Log.i("layout", layoutStr)
+            Log.i("edgeLayout", edgeLayoutStr)
+            Log.i("nodeIndicator", nodeIndicatorStr)
 
             val script = """
-                show(${elementsStr}, ${layoutStr});
+                show(${elementsStr}, ${layoutStr}, ${edgeLayoutStr}, ${nodeIndicatorStr});
             """
             webView.evaluateJavascript(script, null)
         }
@@ -281,7 +300,6 @@ class GraphFragment : Fragment() {
         val dialog: Dialog = Dialog(this.context as MainActivity, R.style.DialogStyle)
         dialog.setContentView(R.layout.dialog_graph_style)
 
-
         val layoutSpinner = dialog.findViewById<Spinner>(R.id.layoutSpinner)
         val layoutSpinnerOptions = arrayOf("grid", "random", "circle", "concentric", "breadthfirst", "cose")
         // set the spinner options
@@ -293,6 +311,18 @@ class GraphFragment : Fragment() {
             )
         }
 
+        val edgeLayoutSpinner = dialog.findViewById<Spinner>(R.id.edgeLayoutSpinner)
+        val edgeLayoutSpinnerOptions = arrayOf("straight", "straight-triangle", "taxi",
+                                                "metro", "haystack", "segments", "bezier")
+        // set the spinner options
+        edgeLayoutSpinner.adapter = activity?.let {
+            ArrayAdapter(
+                it,
+                android.R.layout.simple_spinner_dropdown_item,
+                edgeLayoutSpinnerOptions
+            )
+        }
+
         val nodeIndicatorSwitch = dialog.findViewById<Switch>(R.id.nodeIndicatorSwitch)
         val edgeColoringSwitch = dialog.findViewById<Switch>(R.id.edgeColoringSwitch)
 
@@ -300,6 +330,7 @@ class GraphFragment : Fragment() {
         layoutSpinner.setSelection(layoutSpinnerOptions.indexOf(layoutState))
         nodeIndicatorSwitch.isChecked = nodeIndicatorState
         edgeColoringSwitch.isChecked = edgeColoringState
+        edgeLayoutSpinner.setSelection(edgeLayoutSpinnerOptions.indexOf(edgeLayout.getString("curve-style")))
 
         // apply button
         val applyBtn = dialog.findViewById<TextView>(R.id.applyBtn)
@@ -307,6 +338,7 @@ class GraphFragment : Fragment() {
             layoutState = layoutSpinner.selectedItem.toString()
             nodeIndicatorState = nodeIndicatorSwitch.isChecked
             edgeColoringState = edgeColoringSwitch.isChecked
+            edgeLayout.put("curve-style", edgeLayoutSpinner.selectedItem.toString())
 
             // click reload button
             binding.reloadBtn.performClick()
